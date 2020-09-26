@@ -1,9 +1,9 @@
 import gensim
 from nltk.tokenize import sent_tokenize
 
-training_file=open("frost/taylorswift.txt")
-poems1=open("frost/keats.txt")
-poems2=open("frost/frost_poems.txt")
+training_file=open("data/taylorswift.txt")
+poems1=open("data/keats.txt")
+poems2=open("data/frost_poems.txt")
 corpus1=training_file.read().lower().split("\n")
 corpus1=[sentence for sentence in corpus1 if(sentence!='' and len(sentence)>1)]
 corpus2=poems1.read().lower().split("\n")
