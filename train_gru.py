@@ -10,9 +10,9 @@ def reverse_sentence(sentence):
 	new_sent=" ".join(words)
 	return new_sent
 
-training_file=open("taylorswift.txt")
-poems1=open("keats.txt")
-poems2=open("frost_poems.txt")
+training_file=open("data/taylorswift.txt")
+poems1=open("data/keats.txt")
+poems2=open("data/frost_poems.txt")
 corpus1=training_file.read().lower().split("\n")
 corpus1=[sentence for sentence in corpus1 if(sentence!='' and len(sentence)>1)]
 corpus2=poems1.read().lower().split("\n")
