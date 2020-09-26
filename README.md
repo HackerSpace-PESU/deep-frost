@@ -10,5 +10,7 @@ If no rhyming words are found in the vocabulary, the generator stops executing.
 
 Requirements:
 Python 3.x,Tensorflow 2.0,Gensim,Pronouncing,PyQt5 
+
+
 Pre-trained models-
 https://drive.google.com/drive/folders/1yrmnKJ5h0KfIyt8ZxEiX0Y15kwzUMT9o?usp=sharing
