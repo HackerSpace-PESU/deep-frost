@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+#The poem generator which generates sentences according to the rhyming schemes and then combines these sentences into a "poem".
+#Each sentence in the "poem" is generated independently, the last words are chosen according to a rhyming scheme provided by the user. Words that rhyme with and are most similar to the last word in the preceeding sentence are picked as seed for the current sentence.
 #Rhyming scheme --------> input format="AABBCCDD"---> means 8 lines, every two lines rhyming.. Check if previous character is the same as current. If it is, continue with words rhyming with it, else choose a new word and proceed.
 
 from tensorflow import keras
