@@ -33,8 +33,9 @@ from tensorflow.keras.layers import Embedding,GRU,Dense,Bidirectional,Attention,
 from tensorflow.keras.optimizers import Adam
 import numpy as np
 from gensim.models import Word2Vec
+import os
 
-word_model=Word2Vec.load("word2vec_model")
+word_model=Word2Vec.load("models/word2vec_model")
 pretrained_weights=word_model.wv.syn0
 vocab_size,embedding_size=pretrained_weights.shape
 
@@ -61,4 +62,7 @@ model.add(Dense(units=vocab_size,activation="softmax"))
 adam=Adam(lr=0.01)
 model.compile(loss="sparse_categorical_crossentropy",optimizer=adam,metrics=["SparseCategoricalAccuracy"])
 history=model.fit(xs,ys,batch_size=128,epochs=100,verbose=1)
+
+if not os.path.exists('models'):
+    os.makedirs('models')
 model.save("models/poet_gru_model")
