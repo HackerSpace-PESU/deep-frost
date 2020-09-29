@@ -8,7 +8,7 @@ The last word of the sentence is chosen such that it is similar to the last word
 If no such word is found it chooses a word in the vocabulary that rhymes with the last word of the preceeding sentence.
 If no rhyming words are found in the vocabulary, the generator stops executing.
 
-**Requirements**:
+**Requirements**:<BR>
 Python 3.x<BR>
 Tensorflow 2.0<BR>
 Gensim<BR>
