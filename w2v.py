@@ -1,5 +1,6 @@
 import gensim
 from nltk.tokenize import sent_tokenize
+import os
 
 training_file=open("data/taylorswift.txt")
 poems1=open("data/keats.txt")
@@ -14,4 +15,7 @@ corpus=corpus1+corpus2+corpus3
 words=[[word for word in sentence.split()] for sentence in corpus]
 
 word_model=gensim.models.Word2Vec(words,size=100,min_count=1,window=5,iter=100)
+
+if not os.path.exists('models'):
+    os.makedirs('models')
 word_model.save("models/word2vec_model")
