@@ -1,0 +1,7 @@
+tensorflow
+gensim
+pronouncing
+nltk
+PyQt5
+numpy
+keras
