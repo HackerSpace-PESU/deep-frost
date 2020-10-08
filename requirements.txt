@@ -5,3 +5,4 @@ nltk
 PyQt5
 numpy
 keras
+Flask
