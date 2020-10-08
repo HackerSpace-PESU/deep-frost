@@ -13,6 +13,7 @@ This application drew inspiration from the paper, [Shall I Compare Thee to a Mac
 * gensim
 * pronouncing
 * PyQt5
+* Flask
 
 ## How to run Poem Generator
 1. Clone the repo 
