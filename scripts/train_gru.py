@@ -20,18 +20,18 @@ def reverse_sentence(sentence):
     return new_sent
 
 
-training_file = open("data/taylorswift.txt")
-poems1 = open("data/keats.txt")
-poems2 = open("data/frost_poems.txt")
-corpus1 = training_file.read().lower().split("\n")
-corpus1 = [sentence for sentence in corpus1 if(
-    sentence != '' and len(sentence) > 1)]
-corpus2 = poems1.read().lower().split("\n")
-corpus2 = [sentence for sentence in corpus2 if(
-    sentence != '' and len(sentence) > 1)]
-corpus3 = poems2.read().lower().split("\n")
-corpus3 = [sentence for sentence in corpus3 if(
-    sentence != '' and len(sentence) > 1)]
+poems1 = open("data/taylorswift.txt", encoding="utf8")
+poems2 = open("data/keats.txt", encoding="utf8")
+poems3 = open("data/frost_poems.txt", encoding="utf8")
+corpus1 = poems1.read().lower().split("\n")
+corpus1 = [sentence for sentence in corpus1
+           if(sentence != '' and len(sentence) > 1)]
+corpus2 = poems2.read().lower().split("\n")
+corpus2 = [sentence for sentence in corpus2
+           if(sentence != '' and len(sentence) > 1)]
+corpus3 = poems3.read().lower().split("\n")
+corpus3 = [sentence for sentence in corpus3
+           if(sentence != '' and len(sentence) > 1)]
 corpus = corpus1+corpus2+corpus3
 
 # Since the model generates sentences backwards,starting from the last word, it is trained on reversed sentences
