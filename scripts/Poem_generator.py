@@ -4,7 +4,6 @@
 # Rhyming scheme --------> input format="AABBCCDD"---> means 8 lines, every two lines rhyming.
 # Check if previous character is the same as current. If it is, continue with words rhyming with it, else choose a new word and proceed.
 
-from PyQt5 import QtCore, QtGui, QtWidgets
 from tensorflow import keras
 from gensim.models import Word2Vec
 import numpy as np
@@ -12,9 +11,18 @@ import pronouncing
 import random
 import sys
 import os
+import tensorflow as tf
+from tensorflow.python.keras.backend import set_session
+from flask import Flask, render_template, request, redirect, url_for
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
-
-model = keras.models.load_model("models/poet_gru_model")
+sess = tf.Session()
+set_session(sess)
+model = keras.models.load_model("models/poet_gru_model.h5")
+global graph
+graph = tf.get_default_graph() 
 word_model = Word2Vec.load("models/word2vec_model")
 word_vec = word_model.wv
 
@@ -47,10 +55,14 @@ def temp_sample(preds, temp=1.0):
 
 def generate_sent(text, num_generated=5):
     word_indices = [word2index(word) for word in text.lower().split()]
-    for i in range(num_generated):
-        prediction = model.predict(x=np.array(word_indices))
-        index = temp_sample(prediction[-1], 0.7)
-        word_indices.append(index)
+    global graph
+    global sess
+    with graph.as_default():
+    	set_session(sess)
+    	for i in range(num_generated):
+        	prediction = model.predict(x=np.array(word_indices))
+        	index = temp_sample(prediction[-1], 0.7)
+        	word_indices.append(index)
     return " ".join(index_to_word(index) for index in word_indices)
 
 
@@ -98,123 +110,36 @@ def generatePoem(scheme, starting):
         rev_sent = generate_sent(word)
         sent = reverse_sentence(rev_sent)
         poem += sent+"\n"
-    dir_name = "Generated_poems"
-    root_dir = "/home"
-    if(os.path.isdir(dir_name)):
-        os.chdir(dir_name)
-        with open("poem.txt", "w") as f:
-            f.write(poem)
-    else:
-        os.mkdir(dir_name)
-        os.chdir(dir_name)
-        with open("poem.txt", "w") as f:
-            f.write(poem)
-    os.chdir(root_dir)
     return poem
 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'thisisasecret'
 
-class Ui_MainWindow(object):
-    def clicked(self, text):
-        self.label_3.setText(text)
-        self.label_3.adjustSize()
+class PoemForm(FlaskForm):
+    scheme = StringField('Rhyme Scheme:',
+                         validators = [
+                             InputRequired(message='Field is required!'),
+                             Length(min=4, message='scheme should be minimum of length 4')
+                             ])
+    starting = StringField('First Line:',
+                           validators = [
+                               InputRequired(message = 'Field is required!'),
+                               Length(min=15, message='Input is too small')
+                           ])
+    
+    def __init__(self, *args, **kwargs):
+        super(PoemForm, self).__init__(*args, **kwargs)
 
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1001, 692)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.first_line = QtWidgets.QLineEdit(self.centralwidget)
-        self.first_line.setGeometry(QtCore.QRect(120, 70, 361, 25))
-        self.first_line.setObjectName("first_line")
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(500, 70, 80, 25))
-        self.pushButton.setObjectName("pushButton")
-        starting = self.pushButton.clicked.connect(self.line_input)
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(10, 80, 98, 17))
-        self.label.setObjectName("label")
-        self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(10, 10, 151, 17))
-        self.label_2.setObjectName("label_2")
-        self.rhyming_scheme = QtWidgets.QLineEdit(self.centralwidget)
-        self.rhyming_scheme.setGeometry(QtCore.QRect(140, 10, 131, 25))
-        self.rhyming_scheme.setObjectName("rhyming_scheme")
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(290, 10, 89, 25))
-        self.pushButton_2.setObjectName("pushButton_2")
-        scheme = self.pushButton_2.clicked.connect(self.rhyme_input)
-        self.comboBox = QtWidgets.QComboBox(self.centralwidget)
-        self.comboBox.setGeometry(QtCore.QRect(460, 10, 251, 25))
-        self.comboBox.setEditable(False)
-        self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.line = QtWidgets.QFrame(self.centralwidget)
-        self.line.setGeometry(QtCore.QRect(0, 110, 831, 20))
-        self.line.setFrameShape(QtWidgets.QFrame.HLine)
-        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(20, 140, 871, 441))
-        font = QtGui.QFont()
-        font.setPointSize(24)
-        font.setItalic(True)
-        self.label_3.setFont(font)
-        self.label_3.setWordWrap(False)
-        self.label_3.setIndent(5)
-        self.label_3.setObjectName("label_3")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1001, 22))
-        self.menubar.setObjectName("menubar")
-        self.menuGenerate = QtWidgets.QMenu(self.menubar)
-        self.menuGenerate.setObjectName("menuGenerate")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.actionGenerate_new = QtWidgets.QAction(MainWindow)
-        self.actionGenerate_new.setObjectName("actionGenerate_new")
-        self.menuGenerate.addAction(self.actionGenerate_new)
-        self.menubar.addAction(self.menuGenerate.menuAction())
-        self.actionGenerate_new.triggered.connect(
-            lambda: self.clicked(generatePoem(self.scheme, self.starting)))
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+@app.route('/', methods=['GET', 'POST'])
+def home():
+    form = PoemForm()
+    poem=0
+    if form.validate_on_submit():
+        scheme = form.scheme.data
+        starting = form.starting.data
+        poem = generatePoem(scheme, starting).split('\n')
+    return render_template('index.html', form = form, poem = poem)
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Frost"))
-        self.pushButton.setText(_translate("MainWindow", "OK"))
-        self.label.setText(_translate("MainWindow", "Enter first line"))
-        self.label_2.setText(_translate("MainWindow", "Rhyming Scheme"))
-        self.pushButton_2.setText(_translate("MainWindow", "OK"))
-        self.comboBox.setCurrentText(_translate(
-            "MainWindow", "Robert Frost + Taylor Swift +John Keats"))
-        self.comboBox.setItemText(0, _translate(
-            "MainWindow", "Robert Frost + Taylor Swift + John Keats"))
-        self.label_3.setText(_translate(
-            "MainWindow", "Click Generate or ctrl+G to generate a new random poem"))
-        self.menuGenerate.setTitle(_translate("MainWindow", "Generate"))
-        self.actionGenerate_new.setText(
-            _translate("MainWindow", "Generate new"))
-        self.actionGenerate_new.setStatusTip(
-            _translate("MainWindow", "Generate a new poem"))
-        self.actionGenerate_new.setShortcut(_translate("MainWindow", "Ctrl+G"))
-
-    def rhyme_input(self):
-        rs = str(self.rhyming_scheme.text())
-        self.scheme = rs
-
-    def line_input(self):
-        fs = str(self.first_line.text())
-        self.starting = fs
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
+if __name__ == '__main__':
+    app.run(debug=True)
+ 
