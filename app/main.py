@@ -20,10 +20,10 @@ from wtforms.validators import InputRequired, Length, Email, EqualTo, Validation
 
 sess = tf.Session()
 set_session(sess)
-model = keras.models.load_model("model/poet_gru_model")
+model = keras.models.load_model("../model/poet_gru_model")
 global graph
 graph = tf.get_default_graph() 
-word_model = Word2Vec.load("model/word2vec_model")
+word_model = Word2Vec.load("../model/word2vec_model")
 word_vec = word_model.wv
 
 
