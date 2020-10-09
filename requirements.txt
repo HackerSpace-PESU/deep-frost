@@ -1,7 +1,9 @@
-tensorflow
-gensim
-pronouncing
-nltk
-PyQt5
-numpy
-keras
+Flask==1.1.2
+Flask-WTF==0.14.3
+gensim==3.8.3
+Keras==2.4.3
+nltk==3.5
+numpy==1.18.5
+pronouncing==0.2.0
+tensorflow==1.14.0
+gunicorn==20.0.4

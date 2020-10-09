@@ -9,7 +9,7 @@ This application drew inspiration from the paper, [Shall I Compare Thee to a Mac
 
 ## Requirements
 * Python 3.x
-* tensorflow 2.0
+* tensorflow 1.14
 * gensim
 * pronouncing
 * PyQt5
