@@ -18,11 +18,11 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
-sess = tf.Session()
+sess = tf.compat.v1.Session()
 set_session(sess)
 model = keras.models.load_model("/app/model/poet_gru_model")
 global graph
-graph = tf.get_default_graph() 
+graph = tf.compat.v1.get_default_graph() 
 word_model = Word2Vec.load("/app/model/word2vec_model")
 word_vec = word_model.wv
 
@@ -142,4 +142,3 @@ def home():
 
 if __name__ == '__main__':
     app.run(debug=True)
- 
