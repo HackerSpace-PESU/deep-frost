@@ -1,7 +1,7 @@
 # DeepFrost
 A poem generator based on text generation using a Gated Recurral Unit or GRU.
 
-[DeepFrost can be tested out here!](https://hsp-poem-gen.herokuapp.com/)
+[DeepFrost can be tested out here!](https://deep-frost.herokuapp.com/)
 
 ![DeepFrost](img/deep-frost.png)
 
