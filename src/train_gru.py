@@ -1,7 +1,3 @@
-
-# Training a Gated Reccurent Unit for text generation.The model is seeded with the last word of the sentence and
-# it tries to predict the preceeding words. The word embeddings produced by the word2vec model is used in the embedding layer of the network
-
 import tensorflow as tf
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
@@ -20,9 +16,9 @@ def reverse_sentence(sentence):
     return new_sent
 
 
-training_file = open("data/taylorswift.txt")
-poems1 = open("data/keats.txt")
-poems2 = open("data/frost_poems.txt")
+training_file = open("../data/taylorswift.txt")
+poems1 = open("../data/keats.txt")
+poems2 = open("../data/frost_poems.txt")
 corpus1 = training_file.read().lower().split("\n")
 corpus1 = [sentence for sentence in corpus1 if(
     sentence != '' and len(sentence) > 1)]
@@ -34,14 +30,12 @@ corpus3 = [sentence for sentence in corpus3 if(
     sentence != '' and len(sentence) > 1)]
 corpus = corpus1+corpus2+corpus3
 
-# Since the model generates sentences backwards,starting from the last word, it is trained on reversed sentences
 
 corpus = list(map(reverse_sentence, corpus))
 words = [[word for word in sentence.split()] for sentence in corpus]
 lengths = [len(sentence) for sentence in corpus]
 max_len = max(lengths)
-
-word_model = Word2Vec.load("models/word2vec_model")
+word_model = Word2Vec.load("../model/word2vec_model")
 pretrained_weights = word_model.wv.syn0
 vocab_size, embedding_size = pretrained_weights.shape
 
@@ -75,6 +69,6 @@ model.compile(loss="sparse_categorical_crossentropy",
               optimizer=adam, metrics=["SparseCategoricalAccuracy"])
 history = model.fit(xs, ys, batch_size=128, epochs=100, verbose=1)
 
-if not os.path.exists('models'):
-    os.makedirs('models')
-model.save("models/poet_gru_model")
+if not os.path.exists('../model'):
+    os.makedirs('../model')
+model.save("../model/poet_gru_model")
