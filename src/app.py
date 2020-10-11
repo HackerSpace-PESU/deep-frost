@@ -1,15 +1,8 @@
-# The poem generator which generates sentences according to the rhyming schemes and then combines these sentences into a "poem".
-# Each sentence in the "poem" is generated independently, the last words are chosen according to a rhyming scheme provided by the user.
-# Words that rhyme with and are most similar to the last word in the preceeding sentence are picked as seed for the current sentence.
-# Rhyming scheme --------> input format="AABBCCDD"---> means 8 lines, every two lines rhyming.
-# Check if previous character is the same as current. If it is, continue with words rhyming with it, else choose a new word and proceed.
-
 from tensorflow import keras
 from gensim.models import Word2Vec
 import numpy as np
 import pronouncing
 import random
-import sys
 import os
 import tensorflow as tf
 from tensorflow.python.keras.backend import set_session
@@ -18,11 +11,10 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length, Email, EqualTo, ValidationError
 
-sess = tf.Session()
+
+sess = tf.compat.v1.Session()
 set_session(sess)
 model = keras.models.load_model("../model/poet_gru_model")
-global graph
-graph = tf.get_default_graph() 
 word_model = Word2Vec.load("../model/word2vec_model")
 word_vec = word_model.wv
 
@@ -55,14 +47,10 @@ def temp_sample(preds, temp=1.0):
 
 def generate_sent(text, num_generated=5):
     word_indices = [word2index(word) for word in text.lower().split()]
-    global graph
-    global sess
-    with graph.as_default():
-    	set_session(sess)
-    	for i in range(num_generated):
-        	prediction = model.predict(x=np.array(word_indices))
-        	index = temp_sample(prediction[-1], 0.7)
-        	word_indices.append(index)
+    for i in range(num_generated):
+        prediction = model.predict(x=np.array(word_indices))
+        index = temp_sample(prediction[-1], 0.7)
+        word_indices.append(index)
     return " ".join(index_to_word(index) for index in word_indices)
 
 
@@ -79,8 +67,7 @@ def generatePoem(scheme, starting):
             if word in word_vec.vocab:
                 possible.append(word)
     if not possible:
-        print("No rhyming words found! :(")
-        sys.exit()
+        return "No rhyming words found! :("
 
     scheme_dictionary = {}
     scheme_dictionary[scheme[0]] = possible
@@ -101,8 +88,7 @@ def generatePoem(scheme, starting):
             scheme_dictionary[letter] = possible
 
     if not possible:
-        print("No rhyming words found! :(")
-        sys.exit()
+        return "No rhyming words found! :("
 
     poem = starting+"\n"
     for letter in scheme:
@@ -112,8 +98,10 @@ def generatePoem(scheme, starting):
         poem += sent+"\n"
     return poem
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisisasecret'
+
 
 class PoemForm(FlaskForm):
     scheme = StringField('Rhyme Scheme:',
@@ -130,6 +118,7 @@ class PoemForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(PoemForm, self).__init__(*args, **kwargs)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     form = PoemForm()
@@ -140,6 +129,6 @@ def home():
         poem = generatePoem(scheme, starting).split('\n')
     return render_template('index.html', form = form, poem = poem)
 
+
 if __name__ == '__main__':
     app.run(debug=True)
- 
