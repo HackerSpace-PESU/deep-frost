@@ -21,17 +21,33 @@ git clone https://github.com/HackerSpace-PESU/deep-frost
 ```bash
 pip install -r requirements.txt
 ```
-3. To use the pre-trained models for generation, place the models in a folder named `model` and accordingly change the directory paths in the main [script](https://github.com/HackerSpace-PESU/deep-frost/blob/master/src/main.py).
-4. To train a new model, replace the directory paths in the scripts below and run them using
+3. To run the poem generator, use
+```bash
+cd src/
+flask run
+```
+Note - The `app` directory contains the resources for the Heroku app and hence the scripts will throw errors if you try to run them on localhost. To run locally, use the Flask app resources present in the `src` directory.
+
+## How to use custom training data?
+The application has already been trained and uses the models in the `model` directory to generate. However, the application can also be trained to use custom lyrics or poems.
+
+1. To train a new model, replace the directory paths in `w2v.py` and to your training corpora. As an example, a few documents have been included in the `data` directory.
+
+2. Train a word2vec embedding model using the following command. This will produce an embedding model and save it in the `model` directory.
 ```bash
 python3 w2v.py
+```
+
+3. To train the GRU model, first replace the directory path inside `train_gru.py` to point to your newly created word embedding model. Then run the following command to generate the generator model (also saved in the `model` directory).
+```bash
 python3 train_gru.py
 ```
-5. To run the poem generator, use
+
+4. Replace the paths inside `app.py` to point to the newly generated models. Run the application using 
 ```bash
 flask run
 ```
 
-## Pre-trained Models
-The pre-trained models can be found [here](https://drive.google.com/drive/folders/1yrmnKJ5h0KfIyt8ZxEiX0Y15kwzUMT9o?usp=sharing). They were trained on a corpus of lyrics by Frost, Taylor Swift and John Keats.
+## Pre-trained Models and Training Corpora
+The pre-trained models can be found [here](https://drive.google.com/drive/folders/1yrmnKJ5h0KfIyt8ZxEiX0Y15kwzUMT9o?usp=sharing) as well as in the `model` directory. They were trained on a corpus of lyrics by Frost, Taylor Swift and John Keats, which can be found in the `data` directory.
 
