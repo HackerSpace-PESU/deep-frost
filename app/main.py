@@ -58,7 +58,10 @@ def generatePoem(scheme, starting):
     possible = []
     first_end_word = starting.split()[-1]
     rhyming_words = pronouncing.rhymes(first_end_word)
-    most_sim = list(word_model.most_similar(first_end_word))
+    try:
+    	most_sim = list(word_model.most_similar(first_end_word))
+    except:
+    	return "Word not found in vocabulary"
     for word, prob in most_sim:
         if word in rhyming_words:
             possible.append(word)
