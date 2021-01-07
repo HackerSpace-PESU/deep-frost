@@ -14,7 +14,7 @@ from wtforms.validators import InputRequired, Length, Email, EqualTo, Validation
 
 sess = tf.compat.v1.Session()
 set_session(sess)
-model = keras.models.load_model("/app/model/poet_gru_model.h5")
+model = keras.models.load_model("/app/model/poet_gru_model.h5",compile=False)
 word_model = Word2Vec.load("/app/model/word2vec_model")
 word_vec = word_model.wv
 
