@@ -31,13 +31,13 @@ corpus3 = poems2.read().lower().split("\n")
 corpus3 = [sentence for sentence in corpus3 if(
     sentence != '' and len(sentence) > 1)]
 corpus4 = poems3.read().lower().split("\n")
-corpus4 = [sentence for sentence in corpus3 if(
+corpus4 = [sentence for sentence in corpus4 if(
     sentence != '' and len(sentence) > 1)]
 corpus5 = poems4.read().lower().split("\n")
-corpus5 = [sentence for sentence in corpus3 if(
+corpus5 = [sentence for sentence in corpus5 if(
     sentence != '' and len(sentence) > 1)]
 corpus6 = poems5.read().lower().split("\n")
-corpus6 = [sentence for sentence in corpus3 if(
+corpus6 = [sentence for sentence in corpus6 if(
     sentence != '' and len(sentence) > 1)]
 corpus = corpus1+corpus2+corpus3+corpus4+corpus5+corpus6
 
@@ -81,4 +81,4 @@ history = model.fit(xs, ys, batch_size=128, epochs=100, verbose=1)
 
 if not os.path.exists('../model'):
     os.makedirs('../model')
-model.save("../model/poet_gru_model")
+model.save("../model/poet_gru_model.hd5")
