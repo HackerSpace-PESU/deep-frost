@@ -81,4 +81,4 @@ history = model.fit(xs, ys, batch_size=128, epochs=100, verbose=1)
 
 if not os.path.exists('../model'):
     os.makedirs('../model')
-model.save("../model/poet_gru_model.hd5")
+model.save("../model/poet_gru_model.h5")
