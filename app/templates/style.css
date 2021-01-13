@@ -56,7 +56,7 @@ h1 {
   align-content: space-around;
   padding: 10px;
   padding-left: 30px;
-  padding-right: 0px;
+  padding-right: 30px;
   position: fixed;
   bottom: 0;
 }
@@ -69,7 +69,7 @@ h1 {
   justify-content: right;
 }
 .footerSpace {
-  width: 1600px;
+  width: 100%;
 }
 #github #instagram #discord #mail:hover {
   color: white;
