@@ -1,0 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+:root {
+  --base-dark-color: #004aad;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+#navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: var(--base-dark-color);
+  height: 70px;
+  padding: 0;
+}
+
+#navbar ul {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0;
+}
+
+#navbar li {
+  list-style: none;
+}
+
+#navbar a {
+  color: white;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  text-decoration: none;
+}
+
+#navbar a:hover {
+  background: #3a72bb;
+}
+
+h1 {
+  font-family: "Roboto", sans-serif;
+}
+
+.footer {
+  background-color: #004aad;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  align-content: space-around;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+  position: fixed;
+  bottom: 0;
+}
+.footerIcon {
+  font-size: 20px;
+  color: white;
+  padding-right: 10px;
+  padding-left: 10px;
+  float: right;
+  justify-content: right;
+}
+.footerSpace {
+  width: 1600px;
+}
+#github #instagram #discord #mail:hover {
+  color: white;
+}
+.content {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: hackerspace;
+  letter-spacing: 1px;
+  color: white;
+}
+
+@media only screen and (max-width: 1100px) {
+  .footer {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  .footerSpace {
+    width: 460px;
+  }
+  .header {
+    font-size: 20px;
+  }
+  .content {
+    font-size: 15px;
+  }
+  .footerIcon {
+    font-size: 17px;
+  }
+}
