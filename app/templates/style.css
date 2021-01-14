@@ -20,6 +20,7 @@ body {
   background: var(--base-dark-color);
   height: 70px;
   padding: 0;
+  width: 100vw;
 }
 
 #navbar ul {
@@ -59,6 +60,7 @@ h1 {
   padding-right: 30px;
   position: fixed;
   bottom: 0;
+  width: 100vw;
 }
 .footerIcon {
   font-size: 20px;
