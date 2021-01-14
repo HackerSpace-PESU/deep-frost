@@ -69,7 +69,7 @@ h1 {
   justify-content: right;
 }
 .footerSpace {
-  width: 100%;
+  width: 70vw;
 }
 #github #instagram #discord #mail:hover {
   color: white;
@@ -88,7 +88,7 @@ h1 {
     padding-right: 15px;
   }
   .footerSpace {
-    width: 460px;
+    width: 50vw;
   }
   .header {
     font-size: 20px;
