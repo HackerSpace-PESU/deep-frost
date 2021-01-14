@@ -20,6 +20,7 @@ body {
   background: var(--base-dark-color);
   height: 70px;
   padding: 0;
+  width: 100vw;
 }
 
 #navbar ul {
@@ -49,6 +50,7 @@ h1 {
 }
 
 .footer {
+  width: 100vw;
   background-color: #004aad;
   color: white;
   display: flex;
@@ -62,14 +64,13 @@ h1 {
 }
 .footerIcon {
   font-size: 20px;
-  color: white;
   padding-right: 10px;
   padding-left: 10px;
   float: right;
   justify-content: right;
 }
 .footerSpace {
-  width: 1600px;
+  width: 70vw;
 }
 #github #instagram #discord #mail:hover {
   color: white;
@@ -88,7 +89,7 @@ h1 {
     padding-right: 15px;
   }
   .footerSpace {
-    width: 460px;
+    width: 50vw;
   }
   .header {
     font-size: 20px;
